@@ -21,7 +21,7 @@ public String timeAgo(java.sql.Timestamp timestamp) {
 <%
 String user = (String) session.getAttribute("user");
 if (user == null) {
-    response.sendRedirect("login.jsp");
+    response.sendRedirect("index.jsp");
     return;
 }
 
@@ -63,6 +63,52 @@ if (rs.next()) {
     <title>Classroom</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
+        :root {
+            --bg-color: #f4f5f7;
+            --text-main: #333;
+            --text-heading: #111;
+            --text-muted: #555;
+            --text-lighter: #888;
+            --header-bg: #111;
+            --header-text: #fff;
+            --card-bg: #ffffff;
+            --card-shadow: rgba(0, 0, 0, 0.02);
+            --card-shadow-hover: rgba(0, 0, 0, 0.05);
+            --border-color: #eaeaea;
+            --input-bg: #fafbfc;
+            --btn-bg: #111;
+            --btn-text: #fff;
+            --btn-hover: #333;
+            --msg-bg: #fff;
+            --msg-color: #2e7d32;
+            --comment-bg: #fafbfc;
+            --modal-overlay: rgba(255, 255, 255, 0.5);
+            --hr-color: #f0f0f0;
+        }
+
+        body.dark-mode {
+            --bg-color: #121212;
+            --text-main: #e0e0e0;
+            --text-heading: #ffffff;
+            --text-muted: #a0a0a0;
+            --text-lighter: #888888;
+            --header-bg: #1e1e1e;
+            --header-text: #ffffff;
+            --card-bg: #1e1e1e;
+            --card-shadow: rgba(0, 0, 0, 0.3);
+            --card-shadow-hover: rgba(0, 0, 0, 0.5);
+            --border-color: #333333;
+            --input-bg: #2c2c2c;
+            --btn-bg: #ffffff;
+            --btn-text: #111111;
+            --btn-hover: #e0e0e0;
+            --msg-bg: #1e1e1e;
+            --msg-color: #81c784;
+            --comment-bg: #2c2c2c;
+            --modal-overlay: rgba(0, 0, 0, 0.7);
+            --hr-color: #333333;
+        }
+
         * {
             margin: 0;
             padding: 0;
@@ -71,9 +117,10 @@ if (rs.next()) {
         }
 
         body {
-            background: #f4f5f7;
-            color: #333;
+            background: var(--bg-color);
+            color: var(--text-main);
             line-height: 1.6;
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .container {
@@ -84,14 +131,16 @@ if (rs.next()) {
 
         /* HEADER */
         .header {
-            background: #111;
-            color: white;
+            background: var(--header-bg);
+            color: var(--header-text);
             padding: 40px 50px;
             border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+            box-shadow: 0 10px 30px var(--card-shadow);
             position: relative;
             overflow: hidden;
             margin-bottom: 40px;
+            border: 1px solid var(--border-color);
+            transition: background 0.3s ease, color 0.3s ease;
         }
 
         .header h2 {
@@ -105,6 +154,7 @@ if (rs.next()) {
             font-size: 16px;
             opacity: 0.8;
             margin-bottom: 5px;
+            color: inherit;
         }
 
         /* SECTION / ANNOUNCEMENTS */
@@ -116,58 +166,59 @@ if (rs.next()) {
             font-size: 24px;
             font-weight: 700;
             margin-bottom: 25px;
-            color: #111;
+            color: var(--text-heading);
             letter-spacing: -0.5px;
         }
 
         /* POST FORM */
         .post-form-container {
-            background: #ffffff;
+            background: var(--card-bg);
             padding: 30px;
             border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
+            box-shadow: 0 4px 15px var(--card-shadow);
             margin-bottom: 40px;
-            border: 1px solid #eaeaea;
+            border: 1px solid var(--border-color);
+            transition: background 0.3s ease;
         }
 
         /* POSTS */
         .post {
-            background: #ffffff;
+            background: var(--card-bg);
             padding: 30px;
             margin-bottom: 25px;
             border-radius: 16px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.02);
-            border: 1px solid #eaeaea;
+            box-shadow: 0 4px 15px var(--card-shadow);
+            border: 1px solid var(--border-color);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
 
         .post:hover {
             transform: translateY(-4px);
-            box-shadow: 0 12px 30px rgba(0, 0, 0, 0.05);
+            box-shadow: 0 12px 30px var(--card-shadow-hover);
         }
 
         .post h4 {
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 12px;
-            color: #111;
+            color: var(--text-heading);
         }
 
         .post p {
             font-size: 15px;
             line-height: 1.6;
-            color: #555;
+            color: var(--text-muted);
             margin-bottom: 20px;
         }
 
         .post small {
-            color: #888;
+            color: var(--text-lighter);
             font-size: 13px;
         }
 
         hr {
             border: 0;
-            border-top: 1px solid #f0f0f0;
+            border-top: 1px solid var(--hr-color);
             margin: 20px 0;
         }
 
@@ -176,20 +227,20 @@ if (rs.next()) {
             width: 100%;
             padding: 14px 16px;
             margin-top: 10px;
-            border: 1px solid #e2e4e8;
+            border: 1px solid var(--border-color);
             border-radius: 10px;
             font-size: 15px;
             transition: all 0.3s ease;
             font-family: 'Inter', sans-serif;
             outline: none;
-            background: #fafbfc;
+            background: var(--input-bg);
+            color: var(--text-main);
             box-sizing: border-box;
         }
 
         input:focus, textarea:focus {
-            border-color: #111;
-            background: #ffffff;
-            box-shadow: 0 0 0 4px rgba(0, 0, 0, 0.05);
+            border-color: var(--btn-bg);
+            background: var(--card-bg);
         }
 
         textarea {
@@ -201,8 +252,8 @@ if (rs.next()) {
         .btn {
             padding: 12px 24px;
             margin-top: 15px;
-            background: #111;
-            color: white;
+            background: var(--btn-bg);
+            color: var(--btn-text);
             border: none;
             border-radius: 10px;
             cursor: pointer;
@@ -215,7 +266,7 @@ if (rs.next()) {
         }
 
         .btn:hover {
-            background: #333;
+            background: var(--btn-hover);
             transform: translateY(-2px);
             box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
         }
@@ -225,7 +276,7 @@ if (rs.next()) {
         }
 
         .btn-danger {
-            background: #fff !important;
+            background: transparent !important;
             color: #ea4335 !important;
             border: 1px solid #ea4335 !important;
         }
@@ -237,7 +288,7 @@ if (rs.next()) {
         }
 
         .btn-warning {
-            background: #fff !important;
+            background: transparent !important;
             color: #f2a500 !important;
             border: 1px solid #f2a500 !important;
         }
@@ -258,36 +309,37 @@ if (rs.next()) {
         .comment-container {
             margin-left: 20px;
             padding: 20px;
-            background: #fafbfc;
+            background: var(--comment-bg);
             border-radius: 12px;
             margin-bottom: 15px;
-            border: 1px solid #eaeaea;
+            border: 1px solid var(--border-color);
+            transition: background 0.3s ease;
         }
 
         .comment-container b {
-            color: #111;
+            color: var(--text-heading);
         }
 
         .comment-container small {
-            color: #888;
+            color: var(--text-lighter);
         }
         
         .comment-text {
             margin-top: 8px;
-            color: #444;
+            color: var(--text-main);
             line-height: 1.6;
         }
 
         /* MESSAGES */
         .msg-box {
-            background: #fff;
-            color: #2e7d32;
+            background: var(--msg-bg);
+            color: var(--msg-color);
             padding: 15px 20px;
             margin-bottom: 25px;
             border-radius: 12px;
             font-weight: 500;
             border-left: 4px solid #4caf50;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.03);
+            box-shadow: 0 4px 15px var(--card-shadow);
             transition: all 0.4s ease;
         }
 
@@ -299,7 +351,7 @@ if (rs.next()) {
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(255, 255, 255, 0.5);
+            background: var(--modal-overlay);
             backdrop-filter: blur(8px);
             justify-content: center;
             align-items: center;
@@ -314,7 +366,7 @@ if (rs.next()) {
         }
 
         .modal-content {
-            background: #ffffff;
+            background: var(--card-bg);
             padding: 40px;
             border-radius: 16px;
             width: 450px;
@@ -322,7 +374,7 @@ if (rs.next()) {
             box-shadow: 0 20px 60px rgba(0, 0, 0, 0.08);
             transform: translateY(30px) scale(0.95);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            border: 1px solid #eee;
+            border: 1px solid var(--border-color);
         }
 
         .modal.show .modal-content {
@@ -331,7 +383,7 @@ if (rs.next()) {
 
         .modal-content h3 {
             margin-bottom: 25px;
-            color: #111;
+            color: var(--text-heading);
             font-weight: 700;
             font-size: 24px;
         }
@@ -353,13 +405,13 @@ if (rs.next()) {
             display: inline-flex;
             align-items: center;
             margin-bottom: 25px;
-            color: #555;
+            color: var(--text-muted);
             text-decoration: none;
             font-weight: 600;
             transition: all 0.2s ease;
         }
         .back-link:hover {
-            color: #111;
+            color: var(--text-heading);
             transform: translateX(-4px);
         }
         .back-link::before {
@@ -532,7 +584,7 @@ while (rsCmt.next()) {
         <% } %>
 
         <% if (!hasPost) { %>
-            <div style="background: white; padding: 30px; text-align: center; border-radius: 16px; color: #888;">
+            <div style="background: var(--card-bg); padding: 30px; text-align: center; border-radius: 16px; color: var(--text-muted); border: 1px solid var(--border-color);">
                 <p>No announcements yet...</p>
             </div>
         <% } %>
@@ -561,6 +613,12 @@ while (rsCmt.next()) {
 </div>
 
 <script>
+// Theme Initialization
+const savedTheme = localStorage.getItem('theme');
+if (savedTheme === 'dark') {
+    document.body.classList.add('dark-mode');
+}
+
 function openEditModal(id, title, content) {
     document.getElementById("editModal").classList.add("show");
     document.getElementById("editPostId").value = id;
